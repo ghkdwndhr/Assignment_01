@@ -8,17 +8,14 @@
     <!-- ✅ p5.js 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 
-    <!-- ✅ sketch.js 추가 -->
+    <!-- ✅ sketch.js 불러오기 -->
     <script defer src="sketch.js"></script>
 </head>
 <body>
+    <!-- ✅ 포트 연결 버튼 -->
     <button id="connectButton">Connect to Arduino</button>
-    <div id="status">Status: Not Connected</div>
 
-    <script>
-        document.getElementById("connectButton").addEventListener("click", () => {
-            connectToArduino();
-        });
-    </script>
+    <!-- ✅ 연결 상태 표시 -->
+    <div id="status">Status: Not Connected</div>
 </body>
 </html>
