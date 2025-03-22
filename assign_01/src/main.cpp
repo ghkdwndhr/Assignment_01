@@ -32,6 +32,7 @@ int brightness = 255;
 
 String mode = "Normal";
 String inputBuffer = "";
+volatile bool modeChanged = false; // ✅ 새로 추가된 플래그
 
 void setup() {
   Serial.begin(9600);
@@ -54,6 +55,10 @@ void setup() {
 
 void loop() {
   runner.execute();
+  if (modeChanged) {
+    sendSerialData();
+    modeChanged = false;
+  }
 }
 
 void trafficLightTaskCallback() {
@@ -119,82 +124,76 @@ void sendSerialData() {
 }
 
 void checkSerialCommand() {
-    while (Serial.available()) {
-        char c = Serial.read();
-        if (c == '\n') {
-            if (inputBuffer.startsWith("D:")) {
-                // 모드 상태에 따라 duration만 갱신
-                // 현재 모드가 Red Only, All Blink, All Off일 경우, 기존 task 상태 그대로 유지
-                int r1 = inputBuffer.indexOf(':');
-                int r2 = inputBuffer.indexOf(',', r1);
-                int r3 = inputBuffer.indexOf(',', r2 + 1);
-                if (r1 != -1 && r2 != -1 && r3 != -1) {
-                    redDuration = inputBuffer.substring(r1 + 1, r2).toInt();
-                    yellowDuration = inputBuffer.substring(r2 + 1, r3).toInt();
-                    greenDuration = inputBuffer.substring(r3 + 1).toInt();
-                }
-            } else if (inputBuffer.startsWith("M:")) {
-                if (inputBuffer.indexOf("Red Only") != -1) toggleRedOnlyMode();
-                else if (inputBuffer.indexOf("All Blink") != -1) toggleBlinkMode();
-                else if (inputBuffer.indexOf("All Off") != -1) toggleAllOffMode();
-            }
-            inputBuffer = "";
-        } else {
-            inputBuffer += c;
+  while (Serial.available()) {
+    char c = Serial.read();
+    if (c == '\n') {
+      if (inputBuffer.startsWith("D:")) {
+        int r1 = inputBuffer.indexOf(':');
+        int r2 = inputBuffer.indexOf(',', r1);
+        int r3 = inputBuffer.indexOf(',', r2 + 1);
+        if (r1 != -1 && r2 != -1 && r3 != -1) {
+          redDuration = inputBuffer.substring(r1 + 1, r2).toInt();
+          yellowDuration = inputBuffer.substring(r2 + 1, r3).toInt();
+          greenDuration = inputBuffer.substring(r3 + 1).toInt();
         }
+      } else if (inputBuffer.startsWith("M:")) {
+        if (inputBuffer.indexOf("Red Only") != -1) toggleRedOnlyMode();
+        else if (inputBuffer.indexOf("All Blink") != -1) toggleBlinkMode();
+        else if (inputBuffer.indexOf("All Off") != -1) toggleAllOffMode();
+      }
+      inputBuffer = "";
+    } else {
+      inputBuffer += c;
     }
+  }
 }
-
 
 void toggleRedOnlyMode() {
   redOnlyMode = !redOnlyMode;
   mode = redOnlyMode ? "Red Only" : "Normal";
 
-  if (redOnlyMode) {
-    trafficLightTask.disable();
-    blinkTask.disable();
-    analogWrite(redLedPin, brightness);
-    analogWrite(yellowLedPin, 0);
-    analogWrite(greenLedPin, 0);
-  } else {
-    previousMillis = millis();
-    trafficLightTask.enable();
-  }
-  sendSerialData();
+  trafficLightTask.disable();
+  blinkTask.disable();
+
+  analogWrite(redLedPin, redOnlyMode ? brightness : 0);
+  analogWrite(yellowLedPin, 0);
+  analogWrite(greenLedPin, 0);
+
+  if (!redOnlyMode) previousMillis = millis();
+  if (!redOnlyMode) trafficLightTask.enable();
+
+  modeChanged = true;
 }
 
 void toggleBlinkMode() {
   blinkMode = !blinkMode;
   mode = blinkMode ? "All Blink" : "Normal";
 
-  if (blinkMode) {
-    trafficLightTask.disable();
-    blinkTask.enable();
-  } else {
-    blinkTask.disable();
-    analogWrite(redLedPin, 0);
-    analogWrite(yellowLedPin, 0);
-    analogWrite(greenLedPin, 0);
-    previousMillis = millis();
-    trafficLightTask.enable();
-  }
-  sendSerialData();
+  trafficLightTask.disable();
+  blinkTask.disable();
+
+  if (blinkMode) blinkTask.enable();
+  else previousMillis = millis(), trafficLightTask.enable();
+
+  analogWrite(redLedPin, 0);
+  analogWrite(yellowLedPin, 0);
+  analogWrite(greenLedPin, 0);
+
+  modeChanged = true;
 }
 
 void toggleAllOffMode() {
   allOff = !allOff;
   mode = allOff ? "All Off" : "Normal";
 
-  if (allOff) {
-    trafficLightTask.disable();
-    blinkTask.disable();
-    analogWrite(redLedPin, 0);
-    analogWrite(yellowLedPin, 0);
-    analogWrite(greenLedPin, 0);
-  } else {
-    previousMillis = millis();
-    trafficLightTask.enable();
-  }
-  sendSerialData();
-}
+  trafficLightTask.disable();
+  blinkTask.disable();
 
+  analogWrite(redLedPin, 0);
+  analogWrite(yellowLedPin, 0);
+  analogWrite(greenLedPin, 0);
+
+  if (!allOff) previousMillis = millis(), trafficLightTask.enable();
+
+  modeChanged = true;
+}
