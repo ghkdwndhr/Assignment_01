@@ -23,7 +23,7 @@ https://youtu.be/HrNqMD0W_Vk?si=k8uvx_Hc8bIbQg1s
 ### 🌟 밝기 조절 (하드웨어)
 - 가변저항을 통해 LED의 밝기를 실시간 조절
 
-- ## 회로사진
+📸 틴커캐드를 이용 회로 사진
 
 ![image](https://github.com/user-attachments/assets/6ed0030c-bfac-411e-83a2-655e16af9422)
 
