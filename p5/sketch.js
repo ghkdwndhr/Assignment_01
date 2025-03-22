@@ -7,18 +7,18 @@ function setup() {
   createCanvas(600, 500);
   textFont("Arial");
 
-  createP("🔴 Red Duration").position(40, 300);
-  redSlider = createSlider(500, 5000, 2000).position(40, 330);
+  createP("🔴 Red Duration").position(250, 300);
+  redSlider = createSlider(500, 5000, 2000).position(260, 350);
 
-  createP("🟡 Yellow Duration").position(220, 300);
-  yellowSlider = createSlider(200, 3000, 500).position(220, 330);
+  createP("🟡 Yellow Duration").position(410, 300);
+  yellowSlider = createSlider(200, 3000, 500).position(420, 350);
 
-  createP("🟢 Green Duration").position(400, 300);
-  greenSlider = createSlider(1000, 5000, 2000).position(400, 330);
+  createP("🟢 Green Duration").position(600, 300);
+  greenSlider = createSlider(1000, 5000, 2000).position(610, 350);
 
-  redOnlyBtn = createButton("🔴 Red Only").position(50, 150).style("font-size", "20px").mousePressed(() => sendMode("Red Only"));
-  blinkBtn = createButton("✨ Blink").position(240, 150).style("font-size", "20px").mousePressed(() => sendMode("All Blink"));
-  toggleBtn = createButton("⛔ Off/On").position(420, 150).style("font-size", "20px").mousePressed(() => sendMode("All Off"));
+  redOnlyBtn = createButton("🔴 Red Only").position(250, 200).style("font-size", "20px").mousePressed(() => sendMode("Red Only"));
+  blinkBtn = createButton("✨ Blink").position(450, 200).style("font-size", "20px").mousePressed(() => sendMode("All Blink"));
+  toggleBtn = createButton("⛔ Off/On").position(620, 200).style("font-size", "20px").mousePressed(() => sendMode("All Off"));
 }
 
 function draw() {
@@ -59,13 +59,28 @@ function sendDurations() {
   }
 }
 
+let lastModeSent = "";  // 마지막으로 보낸 모드 저장
+
 function sendMode(newMode) {
-  if (port?.writable) {
-    const writer = port.writable.getWriter();
-    writer.write(new TextEncoder().encode(`M:${newMode}\n`));
-    writer.releaseLock();
+  if (!port?.writable) return;
+
+  // 같은 모드를 다시 누르면 → Normal 모드로 변경
+  if (newMode === lastModeSent) {
+    newMode = "Normal";
   }
+  lastModeSent = newMode;
+
+  const writer = port.writable.getWriter();
+  const msg = `M:${newMode}\n`;
+  const encoded = new TextEncoder().encode(msg);
+
+  // 신뢰성 위해 2~3번 전송
+  for (let i = 0; i < 3; i++) {
+    writer.write(encoded);
+  }
+  writer.releaseLock();
 }
+
 
 async function connectToArduino() {
   try {
@@ -77,9 +92,21 @@ async function connectToArduino() {
     port.readable.pipeTo(decoder.writable);
     reader = inputStream.getReader();
 
-    readLoop();
+    // ✅ 연결 상태 텍스트를 명확하게 변경
+    const statusDiv = document.getElementById("status");
+    if (statusDiv) {
+      statusDiv.textContent = "✅ Status: Connected";
+      statusDiv.style.color = "green";
+    }
+
+    readLoop(); // 시작
   } catch (err) {
     console.error("Connection failed:", err);
+    const statusDiv = document.getElementById("status");
+    if (statusDiv) {
+      statusDiv.textContent = "❌ Status: Connection Failed";
+      statusDiv.style.color = "red";
+    }
   }
 }
 

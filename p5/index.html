@@ -1,21 +1,70 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traffic Light Control</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traffic Light Control</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script defer src="sketch.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom right, #f0f2f5, #dfe6ed);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding-top: 40px;
+    }
 
-    <!-- ✅ p5.js 라이브러리 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    .ui-container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 720px;
+      text-align: center;
+    }
 
-    <!-- ✅ sketch.js 불러오기 -->
-    <script defer src="sketch.js"></script>
+    #status {
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 8px;
+      color: #444;
+    }
+
+    #connectButton {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #connectButton:hover {
+      background-color: #45a049;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+  </style>
 </head>
 <body>
-    <!-- ✅ 포트 연결 버튼 -->
-    <button id="connectButton">Connect to Arduino</button>
-
-    <!-- ✅ 연결 상태 표시 -->
+  <div class="ui-container">
+    <!-- ✅ 아두이노 연결 버튼과 상태 표시 -->
+    <button id="connectButton">🔌 Connect to Arduino</button>
     <div id="status">Status: Not Connected</div>
+
+    <!-- ✅ 캔버스(p5.js) 아래에서 UI들 자동 삽입 -->
+  </div>
 </body>
 </html>
