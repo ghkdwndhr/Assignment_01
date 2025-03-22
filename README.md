@@ -1,19 +1,23 @@
-# Assignment_01
-## 시연동영상입니다
-https://youtu.be/HrNqMD0W_Vk?si=k8uvx_Hc8bIbQg1s
+# 🚦 Assignment_01: Traffic Light System
+🎬 [**시연 영상 바로가기 클릭!**](https://youtu.be/HrNqMD0W_Vk?si=k8uvx_Hc8bIbQg1s)
 
-# 🚦 Traffic Light Controller
+---
+
+## 🧠 개요
 이번 과제는 **Arduino**와 **p5.js**를 활용하여 신호등 시스템을 하드웨어와 웹 인터페이스로 제어하는 프로젝트입니다. LED, 버튼, 가변저항 등을 이용해 신호등을 구현하고, 웹에서는 슬라이더 및 버튼 UI를 통해 상태를 실시간 모니터링하고 제어할 수 있습니다.
 
+---
+
 ## 🛠️ 주요 기능
+
 ### ✅ 신호등 제어
 - 빨강, 노랑, 초록 LED를 사용하여 실제 신호등 동작 재현
 - TaskScheduler를 사용하여 `delay()` 없이 비동기 제어
 
 ### 🔄 모드 전환 (버튼 & 웹 UI)
-- **Red Only**: 빨간불만 켜지는 비상 모드
-- **All Blink**: 모든 LED가 깜빡이는 경고 모드
-- **All Off**: 모든 LED가 꺼지는 정지 모드
+- 🔴 **Red Only**: 비상 모드 – 빨간불만 점등
+- ✨ **All Blink**: 경고 모드 – 모든 LED 깜빡임
+- ⛔ **All Off**: 전체 정지 – 모든 LED 꺼짐  
 - 버튼 또는 웹 UI에서 토글 가능
 
 ### 🎛️ 슬라이더를 통한 점등 시간 조절 (웹 UI)
@@ -35,13 +39,13 @@ https://youtu.be/HrNqMD0W_Vk?si=k8uvx_Hc8bIbQg1s
 
 ### ⚡ 핀 구성
 
-- 🔴 **Red LED**   : 핀 9  
-- 🟡 **Yellow LED** : 핀 10  
-- 🟢 **Green LED** : 핀 11  
-- 🎚️ **가변저항**   : A0  
+- 🔴 **Red LED**    : 핀 9  
+- 🟡 **Yellow LED** : 핀 10  
+- 🟢 **Green LED**  : 핀 11  
+- 🎚️ **가변저항**   : A0  
 - 🔘 **버튼 1** (Red Only) : 핀 4  
-- 🔘 **버튼 2** (Blink)   : 핀 5  
-- 🔘 **버튼 3** (Off)    : 핀 6
+- 🔘 **버튼 2** (Blink)    : 핀 5  
+- 🔘 **버튼 3** (Off)      : 핀 6
 
 
 ## 💻 소프트웨어 구성
@@ -54,4 +58,16 @@ https://youtu.be/HrNqMD0W_Vk?si=k8uvx_Hc8bIbQg1s
 ### p5.js (JavaScript)
 - 웹 UI 구성 (슬라이더, 버튼, 신호등 시각화)
 - Serial API를 통해 아두이노와 연결 및 제어
-- 아두이노로부터 실시간 상태 데이터 수신 (JSON)  
+- 아두이노로부터 실시간 상태 데이터 수신 (JSON)
+
+- ---
+
+## 🚀 사용 방법
+
+1. 아두이노 보드에 코드 업로드 (PlatformIO 또는 Arduino IDE 사용)
+2. 웹 브라우저에서 `p5.js` 프로젝트 실행
+3. `Connect` 버튼을 눌러 포트 연결
+4. 버튼 / 슬라이더 조작을 통해 신호등 제어 및 상태 확인
+
+---
+
