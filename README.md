@@ -2,6 +2,10 @@
 ## 시연동영상입니다
 https://youtu.be/HrNqMD0W_Vk?si=k8uvx_Hc8bIbQg1s
 
+## 회로사진
+
+![image](https://github.com/user-attachments/assets/6ed0030c-bfac-411e-83a2-655e16af9422)
+
 
 
 ## 아두이노 관련 코드입니다
