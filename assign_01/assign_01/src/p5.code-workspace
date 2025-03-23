@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../../../../새 폴더/p5"
+		},
+		{
+			"name": "assign_01",
+			"path": ".."
+		},
+		{
+			"name": "trafficlight",
+			"path": "../../trafficlight"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "p5"
+	}
+}
