@@ -7,18 +7,18 @@ function setup() {
   createCanvas(600, 500);
   textFont("Arial");
 
-  createP("🔴 Red Duration").position(250, 300);
-  redSlider = createSlider(500, 5000, 2000).position(260, 350);
+  createP("🔴 Red Duration").position(210, 350);
+  redSlider = createSlider(500, 5000, 2000).position(210, 400);
 
-  createP("🟡 Yellow Duration").position(410, 300);
-  yellowSlider = createSlider(200, 3000, 500).position(420, 350);
+  createP("🟡 Yellow Duration").position(390, 350);
+  yellowSlider = createSlider(200, 3000, 500).position(390, 400);
 
-  createP("🟢 Green Duration").position(600, 300);
-  greenSlider = createSlider(1000, 5000, 2000).position(610, 350);
+  createP("🟢 Green Duration").position(570, 350);
+  greenSlider = createSlider(1000, 5000, 2000).position(570, 400);
 
-  redOnlyBtn = createButton("🔴 Red Only").position(250, 200).style("font-size", "20px").mousePressed(() => sendMode("Red Only"));
-  blinkBtn = createButton("✨ Blink").position(450, 200).style("font-size", "20px").mousePressed(() => sendMode("All Blink"));
-  toggleBtn = createButton("⛔ Off/On").position(620, 200).style("font-size", "20px").mousePressed(() => sendMode("All Off"));
+  redOnlyBtn = createButton("🔴 Red Only").position(180, 250).style("font-size", "20px").mousePressed(() => sendMode("Red Only"));
+  blinkBtn = createButton("✨ Blink").position(380, 250).style("font-size", "20px").mousePressed(() => sendMode("All Blink"));
+  toggleBtn = createButton("⛔ Off/On").position(550, 250).style("font-size", "20px").mousePressed(() => sendMode("All Off"));
 }
 
 function draw() {
@@ -43,9 +43,9 @@ function draw() {
     else if (currentLight === "Green") g = color(0, 255, 0, b);
   }
 
-  fill(r); ellipse(width / 4 - 50, height - 100, 80, 80);
-  fill(y); ellipse(width / 2 - 20, height - 100, 80, 80);
-  fill(g); ellipse((width / 4) * 3 + 10, height - 100, 80, 80);
+  fill(r); ellipse(150, 350, 80, 80);
+  fill(y); ellipse(330, 350, 80, 80);
+  fill(g); ellipse(510, 350, 80, 80);
 
   sendDurations();
 }
@@ -53,6 +53,7 @@ function draw() {
 function sendDurations() {
   if (port?.writable) {
     let msg = `D:${redSlider.value()},${yellowSlider.value()},${greenSlider.value()}`;
+
     const writer = port.writable.getWriter();
     writer.write(new TextEncoder().encode(msg + "\n"));
     writer.releaseLock();
@@ -61,25 +62,27 @@ function sendDurations() {
 
 let lastModeSent = "";  // 마지막으로 보낸 모드 저장
 
-function sendMode(newMode) {
+async function sendMode(newMode) {
   if (!port?.writable) return;
 
-  // 같은 모드를 다시 누르면 → Normal 모드로 변경
+  // 같은 모드를 다시 누르면 Normal 모드로
   if (newMode === lastModeSent) {
     newMode = "Normal";
+    lastModeSent = "";  // 초기화
+  } else {
+    lastModeSent = newMode;
   }
-  lastModeSent = newMode;
 
   const writer = port.writable.getWriter();
   const msg = `M:${newMode}\n`;
   const encoded = new TextEncoder().encode(msg);
 
-  // 신뢰성 위해 2~3번 전송
   for (let i = 0; i < 3; i++) {
-    writer.write(encoded);
+    await writer.write(encoded);
   }
   writer.releaseLock();
 }
+
 
 
 async function connectToArduino() {
