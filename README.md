@@ -1,5 +1,5 @@
 # 🚦 Assignment_01: Traffic Light System
-🎬 [**시연 영상 바로가기 클릭!**](https://youtu.be/LoRCegY1H4c?si=t3jjpntcv0HAALPH)
+🎬 [**시연 영상 바로가기 클릭!**](https://youtu.be/8Jzuu0xIzUE?si=eMNhA77QmRPGlkq4)
 
 ---
 
@@ -39,13 +39,13 @@
 
 ### ⚡ 핀 구성
 
-- 🔴 **Red LED**           : 핀 9  
-- 🟡 **Yellow LED**        : 핀 10  
-- 🟢 **Green LED**         : 핀 11  
-- 🎚️ **가변저항**          : A0  
-- 🔘 **버튼 1** (Red Only) : 핀 4  
-- 🔘 **버튼 2** (Blink)    : 핀 5  
-- 🔘 **버튼 3** (Off)      : 핀 6
+- 🔴 **Red LED**             : 핀 9  
+- 🟡 **Yellow LED**          : 핀 10  
+- 🟢 **Green LED**           : 핀 11  
+- 🎚️ **가변저항**            :  A0  
+- 🔘 **버튼 1** (Red Only)   : 핀 4  
+- 🔘 **버튼 2** (Blink)      : 핀 5  
+- 🔘 **버튼 3** (Off)        : 핀 6
 
 
 ## 💻 소프트웨어 구성
