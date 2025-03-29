@@ -73,7 +73,7 @@
 
 ---
 
-## ✋ Assignment_02: Gesture-Controlled Traffic Light Extension
+# ✋ Assignment_02: Gesture-Controlled Traffic Light Extension
 
 이번 과제에서는 기존 신호등 제어 시스템에 **비전 기반 제스처 인식 기능**을 추가하여, 손동작만으로 LED 모드 변경과 지속 시간 조절이 가능하도록 확장하였습니다.
 (기존 회로와 아두이노 코드는 동일합니다.)
